@@ -1,0 +1,698 @@
+@import "tailwindcss";
+/* Class names built in the shared package (e.g. WevSpace theme cover gradients in
+   shared/src/wevspace.ts) live outside frontend/, which Tailwind v4 does not scan
+   by default - without this they are never generated and covers render blank. */
+@source "../../shared/src";
+@import "./design-system.css";
+/* Last, so its unlayered rules win the theme -> native-widget mapping. */
+@import "./browser-normalize.css";
+
+/* Bind `dark:` to the class the app actually sets.
+   Tailwind v4 defaults `dark:` to `@media (prefers-color-scheme: dark)`, but
+   App.tsx resolves the theme itself (including "system") and expresses the
+   result as `.dark` on <html>. Left on the default, every `dark:` utility
+   followed the OS instead of the app: choosing Light while the OS was dark
+   still painted dark text colours, and Edge's own appearance setting can differ
+   from Chrome's on the same machine — so the identical page rendered
+   differently per browser. `.oled`/`.theme-oled` are always added alongside
+   `.dark`, so matching `.dark` covers every dark theme. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/*
+ * Device-screen breakpoints (not window width). Shrinking a desktop browser
+ * must not swap in phone chrome; real phones / DevTools device mode still match.
+ * Prefer `device-md:` / `max-device-md:` for shell chrome (top bar, bottom nav, sidebar).
+ * Fluid content grids may keep viewport `md:` / `lg:`.
+ */
+@custom-variant device-md (@media (min-device-width: 768px));
+@custom-variant max-device-md (@media (max-device-width: 767px));
+
+/* OS / Chrome status-bar chrome follows app theme, not only prefers-color-scheme.
+ * Default dark matches boot-shell.css so deferred main CSS never flashes white
+ * for Dark/OLED users on refresh; Light opts in via html.theme-light. */
+html {
+  color-scheme: dark;
+}
+html.theme-light {
+  color-scheme: light;
+}
+html.dark,
+html.oled,
+html.theme-oled {
+  color-scheme: dark;
+}
+
+@theme {
+  /* Inter is loaded from index.html. The fallbacks are spelled out rather than
+     left to `system-ui` because that keyword resolves differently per browser —
+     which silently changed every metric between Chrome and Edge on Windows. */
+  --font-sans: "Inter", "Inter var", "Segoe UI Variable Text", "Segoe UI",
+    ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+  
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  
+  --radius-xl: 1.5rem; /* 24px */
+  --radius-lg: 1.25rem; /* 20px */
+  --radius-md: 1rem; /* 16px */
+  --radius-sm: 0.75rem; /* 12px */
+}
+
+@layer base {
+  :root {
+    /* Default / Light - Wevsoft */
+    --background: #f8fafc;
+    --foreground: #0f172a;
+    --card: #ffffff;
+    --card-foreground: #0f172a;
+    --popover: #ffffff;
+    --popover-foreground: #0f172a;
+    --primary: #8b5cf6;
+    --primary-foreground: #ffffff;
+    --muted: #f1f5f9;
+    --muted-foreground: #64748b;
+    --border: rgba(0, 0, 0, 0.06); /* Very soft borders */
+    --radius: 1rem; /* 16px consistent radius */
+  }
+  .dark {
+    /* Dark — mockup charcoal */
+    --background: #0b0e11;
+    --foreground: #f4f6f8;
+    --card: #151a21;
+    --card-foreground: #f4f6f8;
+    --popover: #151a21;
+    --popover-foreground: #f4f6f8;
+    --primary: #7c6cff;
+    --primary-foreground: #ffffff;
+    --muted: #1c222b;
+    --muted-foreground: #9aa3b2;
+    --border: rgba(255, 255, 255, 0.08);
+  }
+  .oled, .theme-oled {
+    /* AMOLED True Black */
+    --background: #000000;
+    --foreground: #ffffff;
+    --card: rgba(255, 255, 255, 0.02);
+    --card-foreground: #ffffff;
+    --popover: #000000;
+    --popover-foreground: #ffffff;
+    --primary: #a855f7;
+    --primary-foreground: #ffffff;
+    --muted: rgba(255, 255, 255, 0.05);
+    --muted-foreground: #a1a1aa;
+    --border: rgba(255, 255, 255, 0.05);
+  }
+  
+  /* Male Theme (Professional, Elegant, Tech) */
+  .theme-male {
+    --background: #0f172a;
+    --foreground: #f8fafc;
+    --card: #1e293b;
+    --card-foreground: #f8fafc;
+    --popover: #1e293b;
+    --popover-foreground: #f8fafc;
+    --primary: #3b82f6;
+    --primary-foreground: #ffffff;
+    --muted: #334155;
+    --muted-foreground: #94a3b8;
+    --border: #334155;
+    --radius: 1.25rem;
+  }
+  /* Female Theme (Soft premium, Fashion, Elegant) */
+  .theme-female {
+    --background: #fdf2f8;
+    --foreground: #4c1d95;
+    --card: #ffffff;
+    --card-foreground: #4c1d95;
+    --popover: #ffffff;
+    --popover-foreground: #4c1d95;
+    --primary: #d946ef;
+    --primary-foreground: #ffffff;
+    --muted: #fce7f3;
+    --muted-foreground: #c084fc;
+    --border: #fbcfe8;
+    --radius: 1.5rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground overflow-x-hidden;
+    font-feature-settings: "rlig" 1, "calt" 1;
+    scroll-behavior: smooth;
+  }
+}
+
+/* Completely remove visible scrollbars globally while maintaining full functionality */
+* {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+*::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, and Opera */
+}
+
+/* Opt-in thin scrollbar — overrides the global hide for panels that need a cue */
+.custom-scrollbar {
+  -ms-overflow-style: auto;
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in oklab, var(--primary) 45%, transparent) transparent;
+  scrollbar-gutter: stable;
+}
+.custom-scrollbar::-webkit-scrollbar {
+  display: block !important;
+  width: 5px;
+  height: 5px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+  margin-block: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: linear-gradient(
+    180deg,
+    color-mix(in oklab, var(--primary) 55%, #a78bfa),
+    color-mix(in oklab, var(--primary) 35%, #22d3ee)
+  );
+  border-radius: 999px;
+  border: 1px solid transparent;
+  background-clip: padding-box;
+  min-height: 28px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(
+    180deg,
+    color-mix(in oklab, var(--primary) 75%, #c4b5fd),
+    color-mix(in oklab, var(--primary) 55%, #67e8f9)
+  );
+}
+.custom-scrollbar::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+/* Composer / modal: even tinier soft pointer */
+.composer-scrollbar {
+  -ms-overflow-style: auto;
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in oklab, var(--primary) 50%, transparent) transparent;
+  scrollbar-gutter: stable;
+}
+.composer-scrollbar::-webkit-scrollbar {
+  display: block !important;
+  width: 4px;
+  height: 4px;
+}
+.composer-scrollbar::-webkit-scrollbar-track {
+  background: color-mix(in oklab, var(--muted) 35%, transparent);
+  border-radius: 999px;
+  margin-block: 8px;
+  margin-inline-end: 2px;
+}
+.composer-scrollbar::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #8b5cf6 0%, #6366f1 45%, #22d3ee 100%);
+  border-radius: 999px;
+  box-shadow: 0 0 0 1px color-mix(in oklab, white 20%, transparent);
+  min-height: 24px;
+}
+.composer-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #a78bfa 0%, #818cf8 45%, #67e8f9 100%);
+}
+.composer-scrollbar::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+.glass {
+  @apply bg-white/10 dark:bg-black/10 backdrop-blur-xl border border-white/20 dark:border-white/5;
+}
+
+/* ── Wevsoft auth mascot ──────────────────────────────────────────────────────
+   Palette for the animated login companion. Scoped to .wev-mascot so the
+   robot can be recoloured without touching global tokens, and overridden per
+   theme class the same way the rest of the design system is. Its accent comes
+   from --primary, so accent themes are inherited for free. */
+.wev-mascot {
+  --wev-shell-hi: #fbfaff;
+  --wev-shell-lo: #e3defa;
+  /* Light themes put a near-white shell on a near-white page, so the outline is
+     what actually draws the silhouette. Keep it strong enough to read. */
+  --wev-edge: rgba(79, 70, 129, 0.28);
+  --wev-visor-hi: #3a3168;
+  --wev-visor-lo: #241d45;
+  --wev-visor-edge: rgba(255, 255, 255, 0.16);
+  --wev-eye-lo: #ded8ff;
+  --wev-pupil: #241d45;
+  --wev-mouth: #cec6ff;
+}
+
+/* Auth-page mascot sizing lives in `auth-page.css` (`.auth-screen .wev-mascot--auth`). */
+.wev-mascot--auth {
+  width: auto;
+  height: auto;
+  max-width: min(100%, 44rem);
+  margin-block: 0.25rem;
+  flex-shrink: 0;
+}
+
+/* Auth layout lives in `frontend/src/pages/auth-page.css` (imported by AuthPage). */
+
+/* Short desktop viewports: tighten spacing; page scrolls naturally (no card squeeze). */
+@media (min-width: 1024px) and (max-height: 46rem) {
+  .auth-form.space-y-4 > :not([hidden]) ~ :not([hidden]),
+  .auth-form-stack.space-y-4 > :not([hidden]) ~ :not([hidden]) {
+    margin-top: 0.75rem;
+  }
+}
+
+@media (min-width: 1024px) and (max-height: 40rem) {
+  .auth-form.space-y-4 > :not([hidden]) ~ :not([hidden]),
+  .auth-form-stack.space-y-4 > :not([hidden]) ~ :not([hidden]) {
+    margin-top: 0.5rem;
+  }
+}
+.dark .wev-mascot,
+.theme-male .wev-mascot {
+  --wev-shell-hi: #2c3444;
+  --wev-shell-lo: #1a2030;
+  --wev-edge: rgba(255, 255, 255, 0.1);
+  --wev-visor-hi: #141a2b;
+  --wev-visor-lo: #0a0e1a;
+  --wev-visor-edge: rgba(255, 255, 255, 0.1);
+  --wev-eye-lo: #cdd5ff;
+  --wev-pupil: #10142a;
+  --wev-mouth: #b7bfff;
+}
+.oled .wev-mascot,
+.theme-oled .wev-mascot {
+  --wev-shell-hi: #1d1d23;
+  --wev-shell-lo: #0d0d11;
+  /* Against true black the outline is the silhouette, same as in light mode. */
+  --wev-edge: rgba(255, 255, 255, 0.2);
+  --wev-visor-hi: #0a0a0f;
+  --wev-visor-lo: #000000;
+  --wev-visor-edge: rgba(255, 255, 255, 0.12);
+  --wev-eye-lo: #d8d3ff;
+  --wev-pupil: #08080d;
+  --wev-mouth: #c3b8ff;
+}
+.theme-female .wev-mascot {
+  --wev-shell-hi: #fffcfe;
+  --wev-shell-lo: #fbdcf0;
+  --wev-edge: rgba(157, 23, 118, 0.26);
+  --wev-visor-hi: #4b1d5e;
+  --wev-visor-lo: #33103f;
+  --wev-eye-lo: #ffe1f5;
+  --wev-pupil: #33103f;
+  --wev-mouth: #ffc9ec;
+}
+
+.glow-primary {
+  box-shadow: 0 0 20px rgba(139, 92, 246, 0.4);
+}
+.dark .glow-primary {
+  box-shadow: 0 0 30px rgba(168, 85, 247, 0.4);
+}
+
+.wev-gradient {
+  @apply bg-gradient-to-r from-purple-500 via-violet-500 to-blue-500;
+}
+.wev-gradient-text {
+  @apply bg-clip-text text-transparent bg-gradient-to-r from-purple-500 via-violet-500 to-blue-500;
+}
+
+@layer utilities {
+  /* Mobile bottom nav — Feed blend: soft fade into the scroll surface. */
+  .wev-bottom-nav-blend {
+    background: linear-gradient(
+      to top,
+      color-mix(in oklab, var(--background) 92%, transparent) 0%,
+      color-mix(in oklab, var(--background) 55%, transparent) 55%,
+      transparent 100%
+    );
+    -webkit-mask-image: linear-gradient(to top, #000 48%, transparent 100%);
+    mask-image: linear-gradient(to top, #000 48%, transparent 100%);
+  }
+
+  /* Mobile top header — Feed blend: frost fades downward into the feed. */
+  .wev-top-header-blend {
+    background: linear-gradient(
+      to bottom,
+      color-mix(in oklab, var(--background) 92%, transparent) 0%,
+      color-mix(in oklab, var(--background) 55%, transparent) 55%,
+      transparent 100%
+    );
+    -webkit-mask-image: linear-gradient(to bottom, #000 48%, transparent 100%);
+    mask-image: linear-gradient(to bottom, #000 48%, transparent 100%);
+  }
+
+  /* Profile bio: keep Unicode “fancy font” glyphs (math alphanumerics) readable.
+     Inter alone often falls back poorly; symbol-capable faces sit after Inter. */
+  .wev-profile-bio {
+    font-family: Inter, "Inter var", "Segoe UI", "Segoe UI Symbol", "Segoe UI Historic",
+      "Noto Sans", "Noto Sans Symbols 2", "Apple Color Emoji", "Segoe UI Emoji",
+      ui-sans-serif, system-ui, sans-serif;
+    font-variant-ligatures: none;
+    font-feature-settings: normal;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+    background: transparent !important;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none !important;
+    scrollbar-width: none !important;
+    scrollbar-gutter: auto !important;
+  }
+  
+  body, html {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  body::-webkit-scrollbar, html::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .animate-spin-slow {
+    animation: spin-slow 8s linear infinite;
+  }
+
+  /* Desktop FAB: clean mark, no cyan/magenta halo behind the orb */
+  .wev-assistant-orb {
+    animation: wev-nav-orb-bob 2.4s ease-in-out infinite;
+    filter: none;
+  }
+}
+
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes wev-nav-orb-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wev-assistant-orb {
+    animation: none;
+  }
+}
+
+/* Settings → Reduce screen motion (access_reduced_motion), see lib/reducedMotion.ts */
+html.reduce-motion *,
+html.reduce-motion *::before,
+html.reduce-motion *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}
+
+@keyframes incognito-burn {
+  0% { opacity: 1; transform: scale(1); filter: blur(0); }
+  55% { opacity: 0.55; transform: scale(0.96); filter: blur(2px); }
+  100% { opacity: 0; transform: scale(0.82); filter: blur(8px); }
+}
+
+.incognito-mode {
+  background-image: linear-gradient(180deg, #030712 0%, rgba(88, 28, 135, 0.22) 45%, #030712 100%);
+}
+
+.incognito-burn {
+  animation: incognito-burn 0.6s ease-in forwards;
+  transform-origin: center;
+}
+
+/* WevChat: full-width list rows so date chips and jump-to-latest stay centered */
+.wevchat-shell [data-item-index],
+.wevchat-shell [data-known-size] {
+  width: 100% !important;
+  box-sizing: border-box;
+}
+
+/* Soft-keyboard: open chat fills the visual viewport on small screens */
+@media (max-width: 767px) {
+  .wevchat-shell.wevchat-shell--chat-open {
+    height: var(--wevchat-vvh, 100dvh);
+    max-height: var(--wevchat-vvh, 100dvh);
+  }
+}
+
+.wevchat-conversation {
+  --wev-chat-theme: #0084ff;
+  min-width: 0;
+}
+
+/* Keep Wevsoft AI FAB clear of the WevChat composer */
+html.wev-messages-page .wev-assistant-dock {
+  bottom: 6.75rem;
+  right: 1.25rem;
+}
+
+/* Facebook WevChat–style outgoing bubble: flat brand blue (themeable) */
+.wevchat-bubble-mine {
+  background-color: var(--wev-chat-theme, #0084ff);
+  background-image: none;
+}
+
+.wevchat-bubble-theirs {
+  box-shadow: none;
+}
+
+.wevchat-conversation.is-compact .wevchat-bubble {
+  font-size: 14px;
+  line-height: 1.35;
+  padding: 0.4rem 0.7rem !important;
+}
+
+/* Home right-rail WevChat — denser header / bubbles / composer */
+.wevchat-shell--rail-compact .wevchat-conversation > .shrink-0.border-b {
+  padding: 0.4rem 0.55rem !important;
+  box-shadow: none;
+}
+.wevchat-shell--rail-compact .wevchat-conversation .wevchat-bubble {
+  font-size: 13px !important;
+  line-height: 1.3 !important;
+  padding: 0.3rem 0.55rem !important;
+}
+.wevchat-shell--rail-compact .wevchat-conversation .wevchat-msg-row {
+  padding-left: 0.75rem !important;
+  padding-right: 0.75rem !important;
+}
+.wevchat-shell--rail-compact .wevchat-bubble-col {
+  max-width: min(88%, 280px) !important;
+}
+.wevchat-shell--rail-compact .wevchat-conversation .mt-3 {
+  margin-top: 0.35rem !important;
+}
+
+/* Closed FAB uses transparent /logo.svg — don't force a solid plate over it */
+html:not(.dark).wev-messages-page .wev-assistant-fab:not(.is-open) {
+  background-image: none;
+  background-color: transparent;
+  color: inherit;
+  box-shadow: none;
+}
+
+/* Settings → Glassmorphism: drop frosted-glass backdrop filters site-wide */
+html.no-glass-effects,
+html.no-glass-effects * {
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+
+/* RTL and Internationalization styling */
+[dir="rtl"] {
+  text-align: right;
+}
+body.rtl {
+  direction: rtl;
+  text-align: right;
+  font-family: "Inter", "Noto Sans Arabic", "Noto Sans Devanagari", "Noto Sans Bengali", system-ui, -apple-system, sans-serif;
+}
+
+
+/* ── Mobile performance (html.wev-mobile-perf via lib/mobilePerf.ts) ───────
+   Soften frosted glass + disable smooth scrolling on phones only.
+   Desktop / tablet landscape keep full glass and smooth scroll. */
+html.wev-mobile-perf,
+html.wev-mobile-perf body {
+  scroll-behavior: auto !important;
+}
+
+html.wev-mobile-perf #main-scroll-area {
+  scroll-behavior: auto !important;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: contain;
+}
+
+/* Cap expensive backdrop blurs while keeping a light frosted look */
+html.wev-mobile-perf:not(.no-glass-effects) .backdrop-blur-2xl,
+html.wev-mobile-perf:not(.no-glass-effects) .backdrop-blur-xl,
+html.wev-mobile-perf:not(.no-glass-effects) .backdrop-blur-lg,
+html.wev-mobile-perf:not(.no-glass-effects) .backdrop-blur-md,
+html.wev-mobile-perf:not(.no-glass-effects) .backdrop-blur-sm,
+html.wev-mobile-perf:not(.no-glass-effects) .backdrop-blur {
+  -webkit-backdrop-filter: blur(8px) saturate(1.1) !important;
+  backdrop-filter: blur(8px) saturate(1.1) !important;
+}
+
+/* Tailwind arbitrary blur on fixed mobile chrome (bottom nav etc.) */
+html.wev-mobile-perf:not(.no-glass-effects) [class*="backdrop-blur-["] {
+  -webkit-backdrop-filter: blur(10px) saturate(1.1) !important;
+  backdrop-filter: blur(10px) saturate(1.1) !important;
+}
+
+/* Feed cards: do NOT use content-visibility here.
+   VirtualBlock already swaps far cards for measured spacers against
+   #main-scroll-area. content-visibility on near cards caused blank blinks
+   when scrolling down (browser deferred paint at the scroller edge). */
+
+/* Guard horizontal overflow on very small devices (320–360) */
+@media (max-width: 430px) {
+  html.wev-mobile-perf #main-scroll-area,
+  html.wev-mobile-perf .wevchat-shell {
+    overflow-x: hidden;
+    max-width: 100vw;
+  }
+}
+
+
+/* Desktop keeps smooth scroll on main shell; phones use wev-mobile-perf auto */
+@media (min-width: 768px) {
+  #main-scroll-area {
+    scroll-behavior: smooth;
+  }
+}
+
+/* WevChat message list: native momentum scroll, no scroll chaining, no smooth-scroll fights with virtualization */
+.wevchat-message-scroller {
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: contain;
+  scroll-behavior: auto !important;
+  overflow-anchor: none;
+}
+
+/* UI icons only (Lucide + custom wev-icon) — slight brightness lift.
+   Does not touch logos, photos, or decorative illustrations.
+   Soft glow is scoped to post action rows (`.wev-post-actions`) only. */
+svg.lucide,
+svg.wev-icon {
+  filter: brightness(1.08);
+}
+html.dark svg.lucide,
+html.dark svg.wev-icon,
+html.oled svg.lucide,
+html.oled svg.wev-icon,
+html.theme-oled svg.lucide,
+html.theme-oled svg.wev-icon {
+  filter: brightness(1.12);
+}
+
+/* Feed / Space / Profile post action row: bold strokes/counts, no soft glow/haze. */
+.wev-post-actions {
+  color: var(--foreground);
+}
+.wev-post-actions button,
+.wev-post-actions [aria-label] {
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+.wev-post-actions .tabular-nums,
+.wev-post-actions span.tabular-nums {
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  color: inherit;
+}
+.wev-post-actions svg.lucide,
+.wev-post-actions svg.wev-icon {
+  stroke-width: 2.35;
+  filter: none;
+}
+html.dark .wev-post-actions svg.lucide,
+html.dark .wev-post-actions svg.wev-icon,
+html.oled .wev-post-actions svg.lucide,
+html.oled .wev-post-actions svg.wev-icon,
+html.theme-oled .wev-post-actions svg.lucide,
+html.theme-oled .wev-post-actions svg.wev-icon {
+  filter: none;
+}
+
+/* ── WevSoft design tokens (core UI) ─────────────────────────────────────
+   Semantic tokens consumed by components/ui/*. Prefer these over arbitrary
+   values (`bg-[#..]`, `text-[13px]`, `z-[9999]`). Migrate old call sites
+   gradually: when touching a file, swap arbitrary values for the nearest
+   token. See components/ui/README.md. */
+@theme {
+  /* Colors (theme-aware: resolve through the CSS vars set per theme below) */
+  --color-destructive: var(--destructive, #e11d48);
+  --color-destructive-foreground: #ffffff;
+  --color-success: var(--success, #16a34a);
+  --color-warning: var(--warning, #d97706);
+  --color-ring: var(--ring, var(--primary));
+  --color-overlay: var(--overlay, rgba(0, 0, 0, 0.55));
+  --color-surface-hover: var(--surface-hover, rgba(0, 0, 0, 0.05));
+  --color-input: var(--input, var(--border));
+
+  /* Spacing (8px grid; complements Tailwind's default 4px step scale) */
+  --spacing-gutter: 1rem;        /* 16px  p-gutter */
+  --spacing-section: 1.5rem;     /* 24px  gap-section */
+  --spacing-control-sm: 2rem;    /* 32px  h-control-sm */
+  --spacing-control-md: 2.5rem;  /* 40px  h-control-md */
+  --spacing-control-lg: 3rem;    /* 48px  h-control-lg */
+
+  /* Radius (existing sm/md/lg/xl kept above) */
+  --radius-xs: 0.5rem;   /* 8px */
+  --radius-pill: 9999px;
+
+  /* Type scale */
+  --text-caption: 0.75rem;   --text-caption--line-height: 1rem;
+  --text-body-sm: 0.8125rem; --text-body-sm--line-height: 1.25rem;
+  --text-body: 0.9375rem;    --text-body--line-height: 1.5rem;
+  --text-title: 1.125rem;    --text-title--line-height: 1.5rem;
+  --text-headline: 1.5rem;   --text-headline--line-height: 2rem;
+  --text-display: 2rem;      --text-display--line-height: 2.5rem;
+}
+
+/* Named z-index scale. Use as `z-(--z-modal)` in Tailwind v4. */
+:root {
+  --z-base: 0;
+  --z-raised: 10;
+  --z-dropdown: 1000;
+  --z-sticky: 1100;
+  --z-overlay: 1200;
+  --z-modal: 1300;
+  --z-popover: 1400;
+  --z-toast: 1500;
+  --z-tooltip: 1600;
+
+  --destructive: #e11d48;
+  --success: #16a34a;
+  --warning: #d97706;
+  --overlay: rgba(15, 23, 42, 0.5);
+  --surface-hover: rgba(0, 0, 0, 0.05);
+}
+.dark, .oled, .theme-oled {
+  --destructive: #f43f5e;
+  --success: #22c55e;
+  --warning: #f59e0b;
+  --overlay: rgba(0, 0, 0, 0.7);
+  --surface-hover: rgba(255, 255, 255, 0.06);
+}

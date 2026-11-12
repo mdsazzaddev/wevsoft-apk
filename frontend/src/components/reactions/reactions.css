@@ -1,0 +1,322 @@
+/* ───────────────────────────────────────────────────────────────
+   Wevsoft reactions — premium 3D animated faces + glossy pill bar.
+   Everything animates with transform/opacity only (GPU friendly).
+   ─────────────────────────────────────────────────────────────── */
+
+.rx-face { position: relative; display: inline-block; flex: none; line-height: 0; user-select: none; -webkit-user-drag: none; }
+.rx-face img, .rx-static { -webkit-user-drag: none; user-select: none; pointer-events: none; }
+.rx-static { display: inline-block; object-fit: contain; flex: none; }
+.rx-body { position: absolute; inset: 0; transform-origin: 50% 58%; }
+.rx-plate { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.rx-l { position: absolute; display: block; transform-origin: 50% 50%; }
+.rx-face[data-state='hover'] .rx-body,
+.rx-face[data-state='active'] .rx-body,
+.rx-face[data-state='hover'] .rx-l,
+.rx-face[data-state='active'] .rx-l { will-change: transform; }
+
+/* shared pop when a reaction is chosen */
+.rx-face[data-state='active'] { animation: rx-pop .55s cubic-bezier(.34, 1.56, .64, 1) both; }
+@keyframes rx-pop { 0% { transform: scale(.62); } 55% { transform: scale(1.22); } 100% { transform: scale(1); } }
+
+/* ── LOVE ─ elastic heartbeat, floating mini hearts, glow ─────── */
+.rx-glow { position: absolute; inset: -6%; border-radius: 50%; opacity: 0; pointer-events: none;
+  background: radial-gradient(circle, rgba(255, 70, 100, .55) 0%, rgba(255, 70, 100, 0) 68%); }
+.rx-love[data-state='hover'] .rx-body { animation: rx-beat 1.05s cubic-bezier(.3, 1.4, .5, 1) infinite; }
+.rx-love[data-state='active'] .rx-body { animation: rx-beat .9s cubic-bezier(.3, 1.4, .5, 1) 2; }
+.rx-love[data-state='hover'] .rx-glow { animation: rx-glow 1.05s ease-in-out infinite; }
+.rx-love[data-state='active'] .rx-glow { animation: rx-glow .9s ease-out 2; }
+@keyframes rx-beat { 0% { transform: scale(1); } 14% { transform: scale(1.17); } 28% { transform: scale(.98); } 42% { transform: scale(1.1); } 70%, 100% { transform: scale(1); } }
+@keyframes rx-glow { 0%, 100% { opacity: 0; } 18% { opacity: .85; } 60% { opacity: .1; } }
+.rx-minis { position: absolute; left: 0; top: 0; width: 100%; height: 100%; pointer-events: none; }
+.rx-minis img { position: absolute; left: 30%; top: 4%; width: 40%; height: 40%; opacity: 0; will-change: transform, opacity; }
+.rx-love[data-state='hover'] .rx-minis img { animation: rx-float 1.7s ease-out infinite; }
+.rx-love[data-state='active'] .rx-minis img { animation: rx-float 1.3s ease-out 1 both; }
+@keyframes rx-float {
+  0% { opacity: 0; transform: translate3d(0, 0, 0) scale(.35) rotate(0); }
+  18% { opacity: .95; }
+  100% { opacity: 0; transform: translate3d(var(--dx, 0), -150%, 0) scale(.9) rotate(var(--r, 0deg)); }
+}
+
+/* ── HAHA ─ mouth opens wider, eyes squeeze & reopen, bounce + sway ── */
+.rx-haha[data-state='hover'] .rx-body { animation: rx-laugh .86s ease-in-out infinite; }
+.rx-haha[data-state='active'] .rx-body { animation: rx-laugh .7s ease-in-out 3; }
+.rx-haha .rx-mouth { transform-origin: 50% 6%; }
+.rx-haha[data-state='hover'] .rx-mouth, .rx-haha[data-state='active'] .rx-mouth { animation: rx-mouth-laugh .43s ease-in-out infinite alternate; }
+.rx-haha[data-state='hover'] .rx-eyeL, .rx-haha[data-state='hover'] .rx-eyeR,
+.rx-haha[data-state='active'] .rx-eyeL, .rx-haha[data-state='active'] .rx-eyeR { animation: rx-squeeze .86s ease-in-out infinite; }
+.rx-haha[data-state='hover'] .rx-eyeL { transform-origin: 70% 50%; }
+.rx-haha[data-state='hover'] .rx-eyeR { transform-origin: 30% 50%; }
+@keyframes rx-laugh {
+  0%, 100% { transform: translate3d(0, 0, 0) rotate(0); }
+  25% { transform: translate3d(0, -6%, 0) rotate(-6deg); }
+  50% { transform: translate3d(0, 0, 0) rotate(0); }
+  75% { transform: translate3d(0, -6%, 0) rotate(6deg); }
+}
+@keyframes rx-mouth-laugh { 0% { transform: scale(1, .94); } 100% { transform: scale(1.04, 1.16); } }
+@keyframes rx-squeeze { 0%, 100% { transform: scale(1, 1); } 22%, 62% { transform: scale(.94, .62) translateY(8%); } 42% { transform: scale(1, 1); } }
+
+/* ── WOW ─ eyes widen, brows lift, mouth breathes, quick bounce ── */
+.rx-wow[data-state='hover'] .rx-body { animation: rx-wowbob 1.1s cubic-bezier(.34, 1.4, .5, 1) infinite; }
+.rx-wow[data-state='active'] .rx-body { animation: rx-wowbob .8s cubic-bezier(.34, 1.4, .5, 1) 2; }
+.rx-wow[data-state='hover'] .rx-eyeL, .rx-wow[data-state='hover'] .rx-eyeR,
+.rx-wow[data-state='active'] .rx-eyeL, .rx-wow[data-state='active'] .rx-eyeR { animation: rx-eyewide 1.1s ease-in-out infinite; }
+.rx-wow[data-state='hover'] .rx-browL, .rx-wow[data-state='hover'] .rx-browR,
+.rx-wow[data-state='active'] .rx-browL, .rx-wow[data-state='active'] .rx-browR { animation: rx-browup 1.1s ease-in-out infinite; }
+.rx-wow[data-state='hover'] .rx-mouth, .rx-wow[data-state='active'] .rx-mouth { animation: rx-mouth-o 1.1s ease-in-out infinite; }
+@keyframes rx-wowbob { 0%, 100% { transform: translate3d(0, 0, 0) scale(1); } 22% { transform: translate3d(0, -7%, 0) scale(1.06); } 40% { transform: translate3d(0, 1%, 0) scale(.98); } 58% { transform: translate3d(0, 0, 0) scale(1); } }
+@keyframes rx-eyewide { 0%, 100% { transform: scale(1); } 22%, 55% { transform: scale(1.16); } }
+@keyframes rx-browup { 0%, 100% { transform: translateY(0); } 22%, 55% { transform: translateY(-70%); } }
+@keyframes rx-mouth-o { 0%, 100% { transform: scale(1, 1); } 25% { transform: scale(.9, 1.14); } 55% { transform: scale(1.06, .88); } 80% { transform: scale(1, 1.04); } }
+
+/* ── CRYING ─ watery eyes, tears form → roll → vanish, soft sway ── */
+.rx-sad[data-state='hover'] .rx-body { animation: rx-sway 2s ease-in-out infinite; }
+.rx-sad[data-state='active'] .rx-body { animation: rx-sway 1.3s ease-in-out 2; }
+.rx-sad .rx-browL { transform-origin: 10% 90%; } .rx-sad .rx-browR { transform-origin: 90% 90%; }
+.rx-sad[data-state='hover'] .rx-browL, .rx-sad[data-state='active'] .rx-browL { animation: rx-brow-sadL 1.6s ease-in-out infinite; }
+.rx-sad[data-state='hover'] .rx-browR, .rx-sad[data-state='active'] .rx-browR { animation: rx-brow-sadR 1.6s ease-in-out infinite; }
+.rx-sad[data-state='hover'] .rx-mouth, .rx-sad[data-state='active'] .rx-mouth { animation: rx-quiver .5s ease-in-out infinite alternate; }
+.rx-wet { position: absolute; border-radius: 50%; opacity: 0; pointer-events: none;
+  background: radial-gradient(ellipse at 38% 30%, rgba(255,255,255,.95) 0 11%, rgba(255,255,255,0) 30%),
+              radial-gradient(ellipse at 50% 88%, rgba(120,190,255,.55) 0, rgba(120,190,255,0) 55%); }
+.rx-sad[data-state='hover'] .rx-wet, .rx-sad[data-state='active'] .rx-wet { animation: rx-wet 1.6s ease-in-out infinite; }
+.rx-sad[data-state='hover'] .rx-eyeL, .rx-sad[data-state='hover'] .rx-eyeR,
+.rx-sad[data-state='active'] .rx-eyeL, .rx-sad[data-state='active'] .rx-eyeR { animation: rx-eyewet 1.6s ease-in-out infinite; }
+.rx-tear2 { opacity: 0; transform-origin: 50% 0%; }
+.rx-sad .rx-tear { transform-origin: 50% 0%; }
+.rx-sad[data-state='hover'] .rx-tear, .rx-sad[data-state='active'] .rx-tear { animation: rx-tearL 2.1s cubic-bezier(.45, .05, .55, .95) infinite; }
+.rx-sad[data-state='hover'] .rx-tear2, .rx-sad[data-state='active'] .rx-tear2 { animation: rx-tearR 2.1s cubic-bezier(.45, .05, .55, .95) infinite .8s; }
+@keyframes rx-sway { 0%, 100% { transform: translate3d(0, 0, 0) rotate(0); } 30% { transform: translate3d(0, 2%, 0) rotate(-1.6deg); } 70% { transform: translate3d(0, 1%, 0) rotate(1.6deg); } }
+@keyframes rx-brow-sadL { 0%, 100% { transform: rotate(0); } 50% { transform: rotate(-5deg) translateY(4%); } }
+@keyframes rx-brow-sadR { 0%, 100% { transform: rotate(0); } 50% { transform: rotate(5deg) translateY(4%); } }
+@keyframes rx-quiver { 0% { transform: translate3d(-2%, 0, 0) scale(1, 1); } 100% { transform: translate3d(2%, 3%, 0) scale(1.03, 1.08); } }
+@keyframes rx-wet { 0%, 100% { opacity: .15; } 50% { opacity: 1; } }
+@keyframes rx-eyewet { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+@keyframes rx-tearL {
+  0% { opacity: 0; transform: translate3d(24%, 12%, 0) scale(.14); }
+  16% { opacity: 1; transform: translate3d(21%, 15%, 0) scale(.5); }
+  42% { opacity: 1; transform: translate3d(8%, 8%, 0) scale(1); }
+  78% { opacity: 1; transform: translate3d(-3%, 36%, 0) scale(1); }
+  100% { opacity: 0; transform: translate3d(-6%, 52%, 0) scale(.9); }
+}
+@keyframes rx-tearR {
+  0% { opacity: 0; transform: translate3d(-24%, 12%, 0) scale(.12); }
+  16% { opacity: .95; transform: translate3d(-21%, 15%, 0) scale(.42); }
+  42% { opacity: .95; transform: translate3d(-8%, 8%, 0) scale(.8); }
+  78% { opacity: .95; transform: translate3d(3%, 34%, 0) scale(.8); }
+  100% { opacity: 0; transform: translate3d(6%, 50%, 0) scale(.72); }
+}
+
+/* ── ANGRY ─ brows drop, face intensifies, subtle shake, steam ── */
+.rx-heat { position: absolute; inset: 3%; border-radius: 50%; opacity: 0; pointer-events: none;
+  background: radial-gradient(circle at 50% 60%, rgba(255, 40, 10, .38), rgba(255, 40, 10, 0) 72%); }
+.rx-angry[data-state='hover'] .rx-body { animation: rx-shake .5s linear infinite; }
+.rx-angry[data-state='active'] .rx-body { animation: rx-vibrate .45s linear 1; }
+.rx-angry .rx-browL { transform-origin: 85% 90%; } .rx-angry .rx-browR { transform-origin: 15% 90%; }
+.rx-angry[data-state='hover'] .rx-browL, .rx-angry[data-state='active'] .rx-browL { animation: rx-brow-angL .9s ease-in-out infinite alternate; }
+.rx-angry[data-state='hover'] .rx-browR, .rx-angry[data-state='active'] .rx-browR { animation: rx-brow-angR .9s ease-in-out infinite alternate; }
+.rx-angry[data-state='hover'] .rx-eyeL, .rx-angry[data-state='hover'] .rx-eyeR,
+.rx-angry[data-state='active'] .rx-eyeL, .rx-angry[data-state='active'] .rx-eyeR { animation: rx-eyeang .9s ease-in-out infinite alternate; }
+.rx-angry[data-state='hover'] .rx-mouth, .rx-angry[data-state='active'] .rx-mouth { animation: rx-mouthang .9s ease-in-out infinite alternate; }
+.rx-angry[data-state='hover'] .rx-heat, .rx-angry[data-state='active'] .rx-heat { animation: rx-heat .9s ease-in-out infinite alternate; }
+@keyframes rx-shake { 0%, 100% { transform: translate3d(0, 0, 0) rotate(0); } 20% { transform: translate3d(-1.4%, 0, 0) rotate(-.8deg); } 40% { transform: translate3d(1.2%, .4%, 0) rotate(.7deg); } 60% { transform: translate3d(-1%, 0, 0) rotate(-.5deg); } 80% { transform: translate3d(1%, -.3%, 0) rotate(.5deg); } }
+@keyframes rx-vibrate { 0%, 100% { transform: translate3d(0, 0, 0) rotate(0); } 12% { transform: translate3d(-3%, 0, 0) rotate(-2deg); } 25% { transform: translate3d(3%, 0, 0) rotate(2deg); } 40% { transform: translate3d(-2.4%, 0, 0) rotate(-1.4deg); } 55% { transform: translate3d(2%, 0, 0) rotate(1.2deg); } 75% { transform: translate3d(-1%, 0, 0) rotate(-.5deg); } }
+@keyframes rx-brow-angL { 0% { transform: translateY(0) rotate(0); } 100% { transform: translateY(14%) rotate(7deg); } }
+@keyframes rx-brow-angR { 0% { transform: translateY(0) rotate(0); } 100% { transform: translateY(14%) rotate(-7deg); } }
+@keyframes rx-eyeang { 0% { transform: scale(1, 1); } 100% { transform: scale(1.02, .86) translateY(6%); } }
+@keyframes rx-mouthang { 0% { transform: scale(1, 1); } 100% { transform: scale(1.06, .9) translateY(2%); } }
+@keyframes rx-heat { 0% { opacity: .1; } 100% { opacity: .75; } }
+.rx-steam { position: absolute; inset: 0; pointer-events: none; }
+.rx-steam i { position: absolute; width: 24%; height: 24%; border-radius: 50%; opacity: 0; will-change: transform, opacity;
+  background: radial-gradient(circle at 40% 38%, #f6f8fc 0, #d3dae7 40%, rgba(146, 160, 188, .7) 64%, rgba(146, 160, 188, 0) 78%);
+  filter: drop-shadow(0 1px 2px rgba(90, 105, 140, .5)); }
+.rx-steam .l1 { left: -10%; top: 6%; } .rx-steam .l2 { left: 0; top: -6%; }
+.rx-steam .r1 { right: -10%; top: 6%; } .rx-steam .r2 { right: 0; top: -6%; }
+.rx-angry[data-state='hover'] .rx-steam i, .rx-angry[data-state='active'] .rx-steam i { animation: rx-puff 1.25s ease-out infinite; }
+.rx-steam .l2, .rx-steam .r2 { animation-delay: .6s !important; }
+.rx-steam .r1 { animation-delay: .25s !important; } .rx-steam .r2 { animation-delay: .85s !important; }
+.rx-steam .l1, .rx-steam .l2 { --sx: -26%; } .rx-steam .r1, .rx-steam .r2 { --sx: 26%; }
+@keyframes rx-puff { 0% { opacity: 0; transform: translate3d(0, 20%, 0) scale(.4); } 25% { opacity: .85; } 100% { opacity: 0; transform: translate3d(var(--sx, 0), -90%, 0) scale(1.35); } }
+
+/* ───────────────── Glossy pill bar ───────────────── */
+.rx-bar {
+  --rx-icon: 42px;
+  position: relative; display: flex; align-items: center; gap: 6px; padding: 9px 18px; border-radius: 999px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, .98) 0%, rgba(244, 247, 252, .96) 100%);
+  border: 1px solid rgba(150, 170, 205, .42);
+  box-shadow: 0 14px 34px -8px rgba(28, 46, 84, .28), 0 4px 10px -4px rgba(28, 46, 84, .16), inset 0 1.5px 0 #fff, inset 0 -8px 14px -6px rgba(140, 160, 195, .2);
+  -webkit-backdrop-filter: blur(14px) saturate(1.4); backdrop-filter: blur(14px) saturate(1.4);
+  touch-action: manipulation;
+}
+.rx-bar::before { content: ''; position: absolute; left: 12%; right: 12%; top: 2px; height: 38%; border-radius: 999px; pointer-events: none;
+  background: linear-gradient(180deg, rgba(255,255,255,.85), rgba(255,255,255,0)); opacity: .7; }
+.rx-bar::after { content: ''; position: absolute; inset: 3px; border-radius: 999px; pointer-events: none; border: 1.5px solid rgba(255, 255, 255, .95); box-shadow: inset 0 0 0 1px rgba(160, 182, 220, .22); }
+.dark .rx-bar::after { border-color: rgba(255, 255, 255, .06); box-shadow: none; }
+.oled .rx-bar::after { border-color: rgba(255, 255, 255, .05); }
+.dark .rx-bar { background: linear-gradient(180deg, rgba(48, 52, 64, .96), rgba(30, 33, 42, .96)); border-color: rgba(255, 255, 255, .13);
+  box-shadow: 0 16px 36px -8px rgba(0, 0, 0, .7), 0 4px 10px -4px rgba(0, 0, 0, .5), inset 0 1px 0 rgba(255, 255, 255, .14), inset 0 -8px 14px -6px rgba(0, 0, 0, .35); }
+.dark .rx-bar::before, .oled .rx-bar::before { display: none; }
+.oled .rx-bar { background: linear-gradient(180deg, #0b0b0d, #000); border-color: rgba(255, 255, 255, .16);
+  box-shadow: 0 16px 36px -8px rgba(0, 0, 0, .95), 0 0 0 1px rgba(255, 255, 255, .03), inset 0 1px 0 rgba(255, 255, 255, .12); }
+
+/*
+ * Reels reaction popover — match reference asset:
+ * light frosted glass capsule, soft shadow, no hard border,
+ * snug padding around the five glossy 3D faces.
+ */
+.rx-bar--reel,
+.dark .rx-bar--reel,
+.oled .rx-bar--reel {
+  --rx-icon: 34px;
+  gap: 4px;
+  padding: 8px 14px;
+  isolation: isolate;
+  overflow: visible;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, .78) 0%,
+    rgba(236, 238, 242, .72) 100%
+  );
+  border: none;
+  box-shadow:
+    0 10px 28px -6px rgba(0, 0, 0, .45),
+    0 2px 8px -2px rgba(0, 0, 0, .28),
+    inset 0 1px 0 rgba(255, 255, 255, .75);
+  -webkit-backdrop-filter: blur(22px) saturate(1.35);
+  backdrop-filter: blur(22px) saturate(1.35);
+}
+.rx-bar--reel::before,
+.dark .rx-bar--reel::before,
+.oled .rx-bar--reel::before {
+  content: '';
+  display: block;
+  position: absolute;
+  left: 10%;
+  right: 10%;
+  top: 2px;
+  height: 42%;
+  z-index: 0;
+  border-radius: 999px;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(255, 255, 255, .7), rgba(255, 255, 255, 0));
+  opacity: .65;
+  border: none;
+  box-shadow: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  -webkit-mask-image: none;
+  mask-image: none;
+}
+.rx-bar--reel::after,
+.dark .rx-bar--reel::after,
+.oled .rx-bar--reel::after {
+  display: none;
+}
+.rx-bar--reel .rx-item {
+  z-index: 1;
+  width: calc(var(--rx-icon) + 6px);
+  height: calc(var(--rx-icon) + 6px);
+}
+.rx-bar--reel .rx-item::before { display: none; }
+.rx-bar--reel .rx-item[data-selected='true']::after {
+  bottom: -1px;
+  width: 4px;
+  height: 4px;
+  margin-left: -2px;
+  background: var(--rx-dot, #ff3b5c);
+}
+.rx-bar--reel .rx-label {
+  font-size: 10px;
+  padding: 1px 7px;
+  background: rgba(20, 24, 34, .9);
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .3);
+}
+.dark .rx-bar--reel .rx-label,
+.oled .rx-bar--reel .rx-label {
+  background: rgba(20, 24, 34, .92);
+  color: #fff;
+}
+
+/* PC / desktop: smaller capsule, still same frosted look */
+@media (min-width: 768px) {
+  .rx-bar--reel {
+    --rx-icon: 28px;
+    gap: 3px;
+    padding: 6px 11px;
+  }
+  .rx-bar--reel .rx-item {
+    width: calc(var(--rx-icon) + 5px);
+    height: calc(var(--rx-icon) + 5px);
+  }
+  html:not(.dark):not(.oled) .rx-bar--reel {
+    --rx-icon: 26px;
+    gap: 2px;
+    padding: 5px 9px;
+  }
+}
+
+.rx-item { position: relative; display: grid; place-items: center; width: calc(var(--rx-icon) + 10px); height: calc(var(--rx-icon) + 10px);
+  border: 0; background: transparent; padding: 0; cursor: pointer; border-radius: 50%; touch-action: manipulation; -webkit-tap-highlight-color: transparent; outline: none; }
+.rx-item .rx-face, .rx-item .rx-static { width: var(--rx-icon); height: var(--rx-icon); }
+.rx-item::before { content: ''; position: absolute; inset: 1px; border-radius: 50%; opacity: 0; transition: opacity .18s ease; pointer-events: none;
+  background: radial-gradient(circle, rgba(80, 130, 220, .16), rgba(80, 130, 220, 0) 70%); }
+.rx-item[data-selected='true']::before { opacity: 1; }
+.rx-item[data-selected='true']::after { content: ''; position: absolute; bottom: -2px; left: 50%; width: 5px; height: 5px; margin-left: -2.5px; border-radius: 50%; background: var(--rx-dot, #3b82f6); }
+.rx-item:focus-visible { box-shadow: 0 0 0 2px #fff, 0 0 0 4px #3b82f6; }
+.rx-label { position: absolute; bottom: calc(100% + 6px); left: 50%; transform: translateX(-50%); padding: 2px 9px; border-radius: 999px; font-size: 11px; font-weight: 700; line-height: 1.5; white-space: nowrap; pointer-events: none;
+  background: rgba(20, 24, 34, .92); color: #fff; box-shadow: 0 4px 12px rgba(0, 0, 0, .25); }
+.dark .rx-label { background: rgba(255, 255, 255, .95); color: #111; }
+
+/* ── choose burst: ripple + restrained particles ── */
+.rx-burst { position: absolute; left: 50%; top: 50%; width: 0; height: 0; pointer-events: none; z-index: 5; }
+.rx-ring { position: absolute; left: -22px; top: -22px; width: 44px; height: 44px; border-radius: 50%; border: 2px solid var(--c, #3b82f6); opacity: 0; animation: rx-ring .6s ease-out forwards; }
+.rx-heartring { position: absolute; left: -24px; top: -24px; width: 48px; height: 48px; opacity: 0; animation: rx-ring .75s ease-out forwards; color: var(--c, #ff4d6d); }
+.rx-p { position: absolute; left: -2.5px; top: -2.5px; width: 5px; height: 5px; border-radius: 50%; background: var(--c, #3b82f6); opacity: 0; animation: rx-spark .6s cubic-bezier(.2, .7, .3, 1) forwards; }
+@keyframes rx-ring { 0% { opacity: .65; transform: scale(.35); } 100% { opacity: 0; transform: scale(1.7); } }
+@keyframes rx-spark { 0% { opacity: 0; transform: translate3d(0, 0, 0) scale(.5); } 20% { opacity: .95; } 100% { opacity: 0; transform: translate3d(var(--x), var(--y), 0) scale(.3); } }
+
+/* small screens: keep five 40px+ touch targets inside 390px */
+@media (max-width: 440px) { .rx-bar { --rx-icon: 38px; padding: 7px 12px; gap: 2px; } }
+@media (max-width: 360px) { .rx-bar { --rx-icon: 34px; } }
+
+/* calm mode */
+@media (prefers-reduced-motion: reduce) {
+  .rx-face, .rx-face *, .rx-burst * { animation: none !important; transition: none !important; }
+  .rx-minis, .rx-steam, .rx-glow, .rx-heat, .rx-wet, .rx-tear2, .rx-burst { display: none !important; }
+}
+
+/* Frosted glass capsule for every reaction popover (matches reference asset) */
+.rx-bar,
+.dark .rx-bar,
+.oled .rx-bar {
+  isolation: isolate;
+  overflow: visible;
+  background: linear-gradient(180deg, rgba(255, 255, 255, .78) 0%, rgba(236, 238, 242, .72) 100%);
+  border: none;
+  box-shadow:
+    0 10px 28px -6px rgba(0, 0, 0, .35),
+    0 2px 8px -2px rgba(0, 0, 0, .2),
+    inset 0 1px 0 rgba(255, 255, 255, .75);
+  -webkit-backdrop-filter: blur(22px) saturate(1.35);
+  backdrop-filter: blur(22px) saturate(1.35);
+}
+.rx-bar::before,
+.dark .rx-bar::before,
+.oled .rx-bar::before {
+  display: block;
+  left: 10%; right: 10%; top: 2px; height: 42%;
+  z-index: 0;
+  background: linear-gradient(180deg, rgba(255, 255, 255, .7), rgba(255, 255, 255, 0));
+  opacity: .65;
+}
+.rx-bar::after,
+.dark .rx-bar::after,
+.oled .rx-bar::after { display: none; }
+.rx-bar > .rx-item { z-index: 1; }
+.rx-item[data-selected='true']::before { opacity: 0; }
+
+/* Snug capsule: faces (incl. hover scale 1.14 / lift 3px) always stay inside the pill */
+.rx-bar { --rx-icon: 34px; gap: 2px; padding: 5px 8px; }
+.rx-bar .rx-item { width: calc(var(--rx-icon) + 6px); height: calc(var(--rx-icon) + 6px); }
+@media (max-width: 440px) { .rx-bar { --rx-icon: 32px; padding: 4px 7px; gap: 1px; } }
+@media (max-width: 360px) { .rx-bar { --rx-icon: 30px; } }

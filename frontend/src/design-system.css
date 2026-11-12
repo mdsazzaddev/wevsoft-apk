@@ -1,0 +1,122 @@
+/**
+ * Wevsoft OLED True Black & Consumer Design System
+ * 
+ * - AMOLED Pure Black (#000000) for OLED battery savings and true black contrast
+ * - 8px Grid Spacing rules and spacing tokens
+ * - Fluid typography and refined border radii
+ * - Subtle glassmorphism and glow effects
+ */
+
+@layer components {
+  /* ── OLED TRUE BLACK COMPONENT MODIFIERS ── */
+  .oled .bg-card,
+  .theme-oled .bg-card {
+    background-color: #000000 !important;
+  }
+
+  .oled .border-border,
+  .theme-oled .border-border {
+    border-color: #1f1f23 !important;
+  }
+
+  /* ── 8px GRID SPACING UTILITIES ── */
+  .space-grid-1 { gap: 8px; }
+  .space-grid-2 { gap: 16px; }
+  .space-grid-3 { gap: 24px; }
+  .space-grid-4 { gap: 32px; }
+
+  .pad-grid-1 { padding: 8px; }
+  .pad-grid-2 { padding: 16px; }
+  .pad-grid-3 { padding: 24px; }
+  .pad-grid-4 { padding: 32px; }
+
+  /* ── OLED PREMIUM GLOW & CARDS ── */
+  .oled-card {
+    background-color: #000000;
+    border: 1px solid #1f1f23;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.9);
+    border-radius: var(--radius-lg);
+  }
+  
+  .oled-card-hover {
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .oled-card-hover:hover {
+    border-color: #2e2e34;
+    transform: translateY(-1px);
+    box-shadow: 0 8px 30px rgba(168, 85, 247, 0.08);
+  }
+
+  /* ── TYPOGRAPHY ── */
+  .text-title-xl {
+    font-size: 1.875rem;
+    line-height: 2.25rem;
+    font-weight: 800;
+    letter-spacing: -0.025em;
+  }
+  
+  .text-title-lg {
+    font-size: 1.5rem;
+    line-height: 2rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+  
+  .text-title-md {
+    font-size: 1.125rem;
+    line-height: 1.75rem;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+  }
+}
+
+/* ── LIGHT MODE READABILITY & HIGH CONTRAST ENHANCEMENTS ── */
+:root:not(.dark) {
+  --foreground: #09090b;
+  --muted-foreground: #334155;
+  /* `color-scheme` lives in browser-normalize.css — declaring it here too meant
+     this higher-specificity selector silently outranked the theme mapping. */
+}
+
+/* Ensure placeholder text is legible in light mode */
+:root:not(.dark) input::placeholder,
+:root:not(.dark) textarea::placeholder {
+  color: #475569 !important;
+  opacity: 1 !important;
+}
+
+/* The rule above uses opacity !important. Some engines then keep painting the
+   placeholder on top of typed text. Force it off once the control has a value. */
+:root:not(.dark) input:not(:placeholder-shown)::placeholder,
+:root:not(.dark) textarea:not(:placeholder-shown)::placeholder {
+  opacity: 0 !important;
+  color: transparent !important;
+}
+
+/* Ensure muted-foreground opacity modifiers don't wash out text in light mode */
+:root:not(.dark) .text-muted-foreground\/30,
+:root:not(.dark) .text-muted-foreground\/40,
+:root:not(.dark) .text-muted-foreground\/50,
+:root:not(.dark) .text-muted-foreground\/60,
+:root:not(.dark) .text-muted-foreground\/70,
+:root:not(.dark) .text-muted-foreground\/80 {
+  color: #334155 !important;
+}
+
+/* Elevate gray text in light mode to be readable */
+:root:not(.dark) .text-gray-400,
+:root:not(.dark) .text-gray-500,
+:root:not(.dark) .text-zinc-400,
+:root:not(.dark) .text-zinc-500 {
+  color: #334155 !important;
+}
+
+/* Map pastel 400-series text accents to high-contrast 700-series in light mode */
+:root:not(.dark) .text-purple-400 { color: #7e22ce !important; }
+:root:not(.dark) .text-pink-400 { color: #be185d !important; }
+:root:not(.dark) .text-cyan-400 { color: #0e7490 !important; }
+:root:not(.dark) .text-emerald-400 { color: #047857 !important; }
+:root:not(.dark) .text-amber-400 { color: #b45309 !important; }
+:root:not(.dark) .text-sky-400 { color: #0369a1 !important; }
+:root:not(.dark) .text-blue-400 { color: #1d4ed8 !important; }
+:root:not(.dark) .text-violet-400 { color: #6d28d9 !important; }

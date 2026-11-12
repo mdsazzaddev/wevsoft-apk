@@ -1,0 +1,185 @@
+/* WevDesk theme tokens (scoped to .wd-root): dark navy rail, cool grey canvas,
+   white rounded cards, teal brand accent, lavender "Wev AI" accents. */
+.wd-root {
+  --wd-bg: #f3f5f8;
+  --wd-card: #ffffff;
+  --wd-border: #e6e9ee;
+  --wd-line: #eef0f3;
+  --wd-text: #0d1421;
+  --wd-text-2: #2b3443;
+  --wd-muted: #6b7380;
+  --wd-faint: #9aa1ad;
+  --wd-chip: #eef0f3;
+  --wd-btn-border: #d9dde3;
+  --wd-teal: #0f7a6c;
+  --wd-teal-2: #0c6a5d;
+  --wd-green-soft: #dcf5e6;
+  --wd-green: #157a3f;
+  --wd-ai: #5b4fd6;
+  --wd-ai-soft: #efedfc;
+  --wd-ai-text: #3f33b5;
+  --wd-side: #ffffff;
+  --wd-side-active: #e8f5f2;
+  --wd-side-text: #3d4655;
+  --wd-side-head: #8a93a1;
+  --wd-toggle: #cdd3dc;
+  font-family: "Inter", "Inter var", "Segoe UI Variable Text", "Segoe UI", system-ui, -apple-system, sans-serif;
+  color: var(--wd-text);
+  background: var(--wd-bg);
+  -webkit-font-smoothing: antialiased;
+}
+.wd-root .wd-card {
+  background: var(--wd-card);
+  border: 1px solid var(--wd-border);
+  border-radius: 16px;
+}
+.wd-root .wd-scroll { scrollbar-width: thin; scrollbar-color: #cdd3dc transparent; }
+.wd-root .wd-side-scroll { scrollbar-width: thin; scrollbar-color: #d6dbe1 transparent; }
+
+/* ── Visual polish (round 9): tokens + hooks only, no layout changes ───────── */
+.wd-root {
+  --wd-shadow-1: 0 1px 2px rgba(13, 20, 33, 0.04), 0 1px 1px rgba(13, 20, 33, 0.02);
+  --wd-shadow-2: 0 2px 4px rgba(13, 20, 33, 0.04), 0 10px 24px -8px rgba(13, 20, 33, 0.10);
+  --wd-shadow-pop: 0 4px 8px rgba(13, 20, 33, 0.05), 0 24px 48px -12px rgba(13, 20, 33, 0.18);
+  --wd-ring: 0 0 0 3px rgba(15, 122, 108, 0.22);
+  --wd-teal-grad: linear-gradient(135deg, #14a08c 0%, #0f7a6c 55%, #0b6457 100%);
+  --wd-ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  background:
+    radial-gradient(1200px 420px at 85% -120px, rgba(20, 160, 140, 0.07), transparent 70%),
+    var(--wd-bg);
+  font-feature-settings: "cv11", "ss01", "tnum" 0;
+  letter-spacing: -0.003em;
+  text-rendering: optimizeLegibility;
+}
+.wd-root .wd-card {
+  box-shadow: var(--wd-shadow-1);
+  border-color: rgba(13, 20, 33, 0.07);
+}
+
+/* Tiles: hover lift, teal accent hairline on top */
+.wd-root .wd-tile {
+  position: relative;
+  transition: transform 0.22s var(--wd-ease), box-shadow 0.22s var(--wd-ease), border-color 0.22s var(--wd-ease);
+}
+.wd-root .wd-tile::before {
+  content: "";
+  position: absolute;
+  inset: 0 18px auto 18px;
+  height: 2px;
+  border-radius: 0 0 2px 2px;
+  background: var(--wd-teal-grad);
+  opacity: 0;
+  transition: opacity 0.22s var(--wd-ease);
+}
+.wd-root .wd-tile:hover { transform: translateY(-2px); box-shadow: var(--wd-shadow-2); border-color: rgba(13, 20, 33, 0.10); }
+.wd-root .wd-tile:hover::before { opacity: 1; }
+.wd-root .wd-tile-title { font-weight: 640; }
+
+/* Stat cards: soft gradient wash + accent corner */
+.wd-root .wd-stat {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(180deg, #ffffff 0%, #fbfcfd 100%);
+  transition: box-shadow 0.22s var(--wd-ease), transform 0.22s var(--wd-ease);
+}
+.wd-root .wd-stat::after {
+  content: "";
+  position: absolute;
+  right: -28px;
+  top: -28px;
+  width: 92px;
+  height: 92px;
+  border-radius: 999px;
+  background: radial-gradient(circle, rgba(20, 160, 140, 0.13), transparent 70%);
+  pointer-events: none;
+}
+.wd-root .wd-stat:hover { box-shadow: var(--wd-shadow-2); transform: translateY(-1px); }
+
+/* Page header + icon chips */
+.wd-root .wd-pagehead { background: linear-gradient(120deg, #ffffff 0%, #ffffff 60%, #f1faf7 100%); }
+.wd-root .wd-iconchip {
+  background: linear-gradient(145deg, #e9f7f3, #d6efe8);
+  box-shadow: inset 0 0 0 1px rgba(15, 122, 108, 0.12), 0 2px 6px -2px rgba(15, 122, 108, 0.25);
+}
+
+/* Buttons */
+.wd-root .wd-btn {
+  border-color: rgba(13, 20, 33, 0.12);
+  box-shadow: 0 1px 1px rgba(13, 20, 33, 0.04);
+  transition: background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease, transform 0.12s ease, color 0.15s ease;
+}
+.wd-root .wd-btn:not(:disabled):hover { border-color: rgba(13, 20, 33, 0.2); box-shadow: 0 2px 6px -2px rgba(13, 20, 33, 0.12); }
+.wd-root .wd-btn:not(:disabled):active { transform: translateY(0.5px); }
+.wd-root .wd-btn[class*="bg-[var(--wd-teal)]"] { background-image: var(--wd-teal-grad); box-shadow: 0 1px 2px rgba(11, 100, 87, 0.3), 0 6px 14px -6px rgba(15, 122, 108, 0.55); }
+
+/* Pills, chips, switches */
+.wd-root .wd-pill { letter-spacing: 0.01em; box-shadow: inset 0 0 0 1px rgba(13, 20, 33, 0.04); }
+.wd-root .wd-pill-ai, .wd-root .wd-side .wd-nav span[title="AI-assisted"] { background: linear-gradient(135deg, #7468ee, #5b4fd6); }
+.wd-root .wd-chip { transition: background-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease; }
+.wd-root .wd-chip.bg-\[var\(--wd-text\)\] { box-shadow: 0 2px 6px -2px rgba(13, 20, 33, 0.45); }
+.wd-root .wd-switch { box-shadow: inset 0 1px 2px rgba(13, 20, 33, 0.12); transition: background-color 0.2s var(--wd-ease); }
+.wd-root .wd-switch > span { box-shadow: 0 1px 2px rgba(13, 20, 33, 0.25); transition: left 0.2s var(--wd-ease); }
+
+/* Empty states */
+.wd-root .wd-empty {
+  background: repeating-linear-gradient(135deg, #fbfcfd 0 10px, #f7f9fa 10px 20px);
+  border-color: rgba(13, 20, 33, 0.12);
+}
+
+/* Sidebar: light, full-height rail like the admin panel (white card, hairline right border,
+   teal-tinted active row with an edge bar). */
+.wd-root .wd-side { background: var(--wd-side); }
+.wd-root .wd-logo-mark {
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  box-shadow: 0 4px 12px -4px rgba(37, 99, 235, 0.55);
+}
+.wd-root .wd-side-label { font-size: 10px; letter-spacing: 0.12em; }
+.wd-root .wd-nav { position: relative; transition: background-color 0.15s ease, color 0.15s ease; }
+.wd-root .wd-nav svg { color: #7b8494; transition: color 0.15s ease; }
+.wd-root .wd-nav:hover svg { color: var(--wd-text-2); }
+.wd-root .wd-nav.is-active { box-shadow: inset 0 0 0 1px rgba(15, 122, 108, 0.10); }
+.wd-root .wd-nav.is-active::before {
+  content: "";
+  position: absolute;
+  left: -12px;
+  top: 7px;
+  bottom: 7px;
+  width: 3px;
+  border-radius: 0 3px 3px 0;
+  background: var(--wd-teal-grad);
+}
+.wd-root .wd-nav.is-active svg { color: var(--wd-teal); }
+/* Top bar */
+.wd-root .wd-search {
+  box-shadow: var(--wd-shadow-1);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.wd-root .wd-search:hover { border-color: rgba(13, 20, 33, 0.14); }
+.wd-root .wd-search:focus-within { border-color: var(--wd-teal); box-shadow: var(--wd-ring), var(--wd-shadow-1); }
+.wd-root .wd-iconbtn { box-shadow: var(--wd-shadow-1); transition: background-color 0.15s ease, box-shadow 0.15s ease; }
+.wd-root .wd-iconbtn:hover { box-shadow: var(--wd-shadow-2); }
+.wd-root .wd-avatar { background-image: var(--wd-teal-grad); box-shadow: 0 0 0 2px #fff, 0 0 0 3px rgba(15, 122, 108, 0.25); }
+.wd-root .wd-pop { box-shadow: var(--wd-shadow-pop); border-color: rgba(13, 20, 33, 0.08); animation: wd-pop-in 0.16s var(--wd-ease); transform-origin: top; }
+@keyframes wd-pop-in { from { opacity: 0; transform: translateY(-4px) scale(0.985); } to { opacity: 1; transform: none; } }
+
+/* Accessibility: visible keyboard focus everywhere in the shell */
+.wd-root a:focus-visible,
+.wd-root button:focus-visible,
+.wd-root [role="switch"]:focus-visible,
+.wd-root input:focus-visible,
+.wd-root textarea:focus-visible,
+.wd-root select:focus-visible {
+  outline: none;
+  box-shadow: var(--wd-ring);
+  border-radius: 10px;
+}
+.wd-root .wd-side a:focus-visible { box-shadow: var(--wd-ring); }
+
+/* Scrollbars */
+.wd-root .wd-scroll::-webkit-scrollbar { width: 10px; }
+.wd-root .wd-scroll::-webkit-scrollbar-thumb { background: #d3d8df; border-radius: 10px; border: 3px solid var(--wd-bg); }
+
+@media (prefers-reduced-motion: reduce) {
+  .wd-root *, .wd-root *::before, .wd-root *::after { transition: none !important; animation: none !important; }
+  .wd-root .wd-tile:hover, .wd-root .wd-stat:hover { transform: none; }
+}

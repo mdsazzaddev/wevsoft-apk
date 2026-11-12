@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
+  <circle cx="16" cy="16" r="16" fill="#000"/>
+  <path fill="url(#sol)" d="M9.2 19.6c.2-.2.4-.3.7-.3h12.4c.4 0 .7.5.3.9l-2.1 2.1c-.2.2-.4.3-.7.3H7.4c-.4 0-.7-.5-.3-.9l2.1-2.1Zm0-10c.2-.2.4-.3.7-.3h12.4c.4 0 .7.5.3.9l-2.1 2.1c-.2.2-.4.3-.7.3H7.4c-.4 0-.7-.5-.3-.9l2.1-2.1Zm13.1 5c-.2-.2-.4-.3-.7-.3H9.2c-.4 0-.7.5-.3.9l2.1 2.1c.2.2.4.3.7.3h12.4c.4 0 .7-.5.3-.9l-2.1-2.1Z"/>
+  <defs>
+    <linearGradient id="sol" x1="7" y1="8" x2="25" y2="24" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#00FFA3"/>
+      <stop offset="1" stop-color="#DC1FFF"/>
+    </linearGradient>
+  </defs>
+</svg>

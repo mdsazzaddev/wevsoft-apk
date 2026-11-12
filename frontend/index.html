@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>Wevsoft | AI-powered campus social platform</title>
+
+    <!-- Apply saved theme BEFORE boot-shell.css so dark users never flash white. -->
+    <script src="/boot-theme.js?v=20261112e"></script>
+
+    <!-- theme-color + color-scheme are owned by boot-theme.js + statusBarTheme.ts.
+         Default dark shell avoids a white notch flash before localStorage is read. -->
+    <meta name="theme-color" content="#0b0e11" />
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#0b0e11" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0b0e11" />
+    <meta name="color-scheme" content="dark light" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="msapplication-navbutton-color" content="#0b0e11" />
+    <!-- Stable install manifest â€” do NOT swap by theme (Chrome drops Install app). -->
+    <link rel="manifest" href="/manifest.json?v=20261107" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="Wevsoft" />
+
+    <!-- First-paint CSS as external files so production CSP can drop style unsafe-inline. -->
+    <link rel="stylesheet" href="/boot-shell.css?v=20261112e" />
+    <!-- Installed-app launch: start the splash icon download with the HTML. -->
+    <link rel="preload" as="image" href="/icon-512.png" media="(display-mode: standalone)" />
+
+    <!-- Inter: printâ†’all flipped by boot-theme.js (no inline onload=). -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      id="wev-font-inter"
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+      media="print"
+    />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+      />
+    </noscript>
+
+    <!-- Favicons: always 1:1 W mark. Never use wide /logo.svg here (browsers squash it). -->
+    <link rel="icon" href="/favicon.ico?v=20261111" sizes="16x16 32x32 48x48" />
+    <link rel="icon" type="image/svg+xml" href="/logo-mark.svg?v=20261111" />
+    <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png?v=20261111" />
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96.png?v=20261111" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png?v=20261111" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=20261111" />
+    <link rel="mask-icon" href="/logo-mark.svg" color="#3b82f6" />
+
+    <!-- Route SEO: this shell is served for EVERY unknown route (/u/*, /space/*, ...), so it
+         deliberately has no static canonical / og:url (they would point every profile at
+         the homepage). boot-theme.js adds canonical = the current clean URL on
+         www.wevsoft.com, and vite.config.ts (seoStaticPages) pre-renders per-route copies
+         with their own title/description/canonical/og:url for /auth, /spaces, /wevmall,
+         /privacy, /terms so Google sees real values before running JS. -->
+    <meta name="description" content="Wevsoft - Next-generation AI-powered campus social platform." />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <meta property="og:site_name" content="Wevsoft" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Wevsoft | AI-powered campus social platform" />
+    <meta property="og:description" content="Wevsoft - Next-generation AI-powered campus social platform." />
+    <meta property="og:image" content="https://www.wevsoft.com/icon-512.png" />
+    <meta property="og:image:width" content="512" />
+    <meta property="og:image:height" content="512" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Wevsoft | AI-powered campus social platform" />
+    <meta name="twitter:description" content="Wevsoft - Next-generation AI-powered campus social platform." />
+    <meta name="twitter:image" content="https://www.wevsoft.com/icon-512.png" />
+
+    <!-- Homepage-only structured data (boot-theme.js removes it on other paths). -->
+    <script type="application/ld+json" data-wev-home-ld>
+      {"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://www.wevsoft.com/#website","url":"https://www.wevsoft.com/","name":"Wevsoft","alternateName":["WevSoft","WebSoft"],"description":"Wevsoft - Next-generation AI-powered campus social platform.","inLanguage":"en","publisher":{"@id":"https://www.wevsoft.com/#organization"}},{"@type":"Organization","@id":"https://www.wevsoft.com/#organization","name":"Wevsoft","url":"https://www.wevsoft.com/","logo":{"@type":"ImageObject","url":"https://www.wevsoft.com/icon-512.png","width":512,"height":512}}]}
+    </script>
+
+    <meta name="application-name" content="Wevsoft" />
+    <meta name="format-detection" content="telephone=no" />
+
+    <!-- boot-theme.js already ran at the top of <head>; a no-op re-run is skipped via
+         data-wev-boot-theme. SEO (canonical / home JSON-LD) still needs the late pass. -->
+    <script src="/boot-theme.js?v=20261112e" data-wev-boot-theme-seo="1"></script>
+  </head>
+  <body>
+    <div id="wev-initial-splash" role="status" aria-label="Loading Wevsoft">
+      <!-- Same artwork, size and background as the Android launch splash (manifest
+           icon-512 on background_color), so launch -> app is one continuous W. -->
+      <img class="wev-splash-app" src="/icon-512.png" alt="" width="160" height="160" loading="lazy" decoding="async" />
+      <!-- Inline logo: zero network requests, so the W paints on the very first frame. -->
+      <svg class="wev-splash-web" width="128" height="64" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 375 186" fill="none" aria-hidden="true" focusable="false"><polygon points="344,5 343,6 338,6 334,7 329,9 324,12 319,16 315,21 312,27 312,36 313,39 315,43 335,67 338,72 342,77 346,81 348,82 350,82 352,81 353,80 360,65 360,63 369,45 373,36 375,29 375,25 373,18 371,15 368,12 365,10 361,8 354,6 349,6 348,5" fill="#3b82f6"/><polygon points="200,10 194,16 189,25 187,34 187,40 188,45 191,53 201,66 251,127 266,144 283,166 295,179 302,183 308,185 316,186 327,184 336,179 343,172 346,167 349,158 349,147 346,137 334,121 243,11 239,8 233,5 225,3 217,3 212,4" fill="#3b82f6"/><polygon points="7,9 2,17 0,25 1,36 5,44 12,51 21,55 28,56 61,56 69,60 83,75 91,86 165,176 172,182 182,186 196,186 206,182 215,175 220,168 223,160 223,145 220,137 119,13 110,4 100,0 24,0 13,4" fill="#3b82f6"/></svg>
+    </div>
+    <div id="root"></div>
+    <!-- Crawlable fallback content + internal links for clients that do not run JS. -->
+    <noscript>
+      <h1>Wevsoft</h1>
+      <p>Wevsoft is a next-generation AI-powered campus social platform. Enable JavaScript to use the app.</p>
+      <nav aria-label="Wevsoft">
+        <a href="/auth">Log in or sign up</a> ·
+        <a href="/spaces">WevSpace</a> ·
+        <a href="/wevmall">WevMall</a> ·
+        <a href="/privacy">Privacy Policy</a> ·
+        <a href="/terms">Terms of Service</a>
+      </nav>
+    </noscript>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" data-icon="donate">
+  <defs>
+    <linearGradient id="don_a_roof" x1="3" y1="3" x2="21" y2="10" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FDE68A"/>
+      <stop offset="1" stop-color="#D97706"/>
+    </linearGradient>
+    <linearGradient id="don_a_body" x1="4" y1="8" x2="20" y2="22" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#93C5FD"/>
+      <stop offset="1" stop-color="#1D4ED8"/>
+    </linearGradient>
+    <linearGradient id="don_a_col" x1="6" y1="9" x2="8" y2="17" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#DBEAFE"/>
+      <stop offset="1" stop-color="#60A5FA"/>
+    </linearGradient>
+    <linearGradient id="don_a_coin" x1="15" y1="14" x2="22" y2="21" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FDE047"/>
+      <stop offset="1" stop-color="#CA8A04"/>
+    </linearGradient>
+  </defs>
+  <!-- pediment -->
+  <path fill="url(#don_a_roof)" d="M12 2.4 3.6 8.1c-.35.24-.2.79.24.79H20.16c.44 0 .59-.55.24-.79L12 2.4Z"/>
+  <!-- base / steps -->
+  <path fill="url(#don_a_body)" d="M4.2 17.6h15.6c.55 0 1 .45 1 1v1.2c0 .55-.45 1-1 1H4.2c-.55 0-1-.45-1-1v-1.2c0-.55.45-1 1-1Z"/>
+  <path fill="#1E3A8A" fill-opacity=".35" d="M5.1 16.35h13.8c.4 0 .72.32.72.72v.53H4.38v-.53c0-.4.32-.72.72-.72Z"/>
+  <!-- columns -->
+  <rect x="5.6" y="9.1" width="2.1" height="7.25" rx=".45" fill="url(#don_a_col)"/>
+  <rect x="9.2" y="9.1" width="2.1" height="7.25" rx=".45" fill="url(#don_a_col)"/>
+  <rect x="12.8" y="9.1" width="2.1" height="7.25" rx=".45" fill="url(#don_a_col)"/>
+  <rect x="16.4" y="9.1" width="2.1" height="7.25" rx=".45" fill="url(#don_a_col)"/>
+  <!-- lintel -->
+  <path fill="#BFDBFE" d="M4.5 8.65h15c.4 0 .72.32.72.72v.55H3.78v-.55c0-.4.32-.72.72-.72Z"/>
+  <!-- donate coin badge -->
+  <circle cx="18.4" cy="17.6" r="3.55" fill="url(#don_a_coin)" stroke="#92400E" stroke-width=".4"/>
+  <path fill="#92400E" d="M18.4 15.55c-1.05 0-1.7.55-1.7 1.25 0 .55.35.9 1.05 1.1l.55.15c.4.1.55.2.55.4 0 .25-.25.4-.65.4-.35 0-.6-.1-.8-.25l-.25.55c.3.2.7.35 1.15.4v.55h.7v-.55c.95-.1 1.55-.55 1.55-1.3 0-.6-.4-.95-1.15-1.15l-.55-.15c-.35-.1-.5-.2-.5-.4 0-.2.2-.35.55-.35.3 0 .55.1.7.2l.25-.55c-.25-.15-.55-.25-.95-.25v-.55h-.7z"/>
+</svg>

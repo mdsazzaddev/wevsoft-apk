@@ -1,0 +1,71 @@
+/* Shell + color-scheme before React — default DARK to avoid white flash on refresh.
+ * Light mode is opt-in via html.theme-light (set by boot-theme.js / statusBarTheme). */
+html {
+  color-scheme: dark;
+  background: #0b0e11;
+}
+html, body {
+  margin: 0;
+  background: #0b0e11;
+}
+html.dark {
+  color-scheme: dark;
+  background: #0b0e11;
+}
+html.dark, html.dark body {
+  background: #0b0e11;
+}
+html.oled, html.theme-oled {
+  color-scheme: dark;
+  background: #000000;
+}
+html.oled, html.oled body,
+html.theme-oled, html.theme-oled body {
+  background: #000000;
+}
+html.theme-light {
+  color-scheme: light;
+  background: #ffffff;
+}
+html.theme-light, html.theme-light body {
+  background: #ffffff;
+}
+/* Outside #root so React mount does not tear it down into a second loader.
+ * One launch colour (#0b0e11) everywhere: manifest background_color/theme_color,
+ * this splash, and the dark theme, so native splash -> page -> app never flashes. */
+#wev-initial-splash {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  background: #0b0e11;
+  opacity: 1;
+  transition: opacity 180ms ease-out;
+}
+#wev-initial-splash[data-dismissed='1'] {
+  opacity: 0;
+  pointer-events: none;
+}
+#wev-initial-splash img {
+  width: 160px;
+  height: 160px;
+  object-fit: contain;
+  border: 0;
+  -webkit-user-drag: none;
+}
+/* Browser tab: splash follows the saved theme with the transparent mark. */
+#wev-initial-splash .wev-splash-app { display: none; }
+#wev-initial-splash .wev-splash-web { width: 8rem; height: auto; }
+html.theme-light:not(.is-standalone) #wev-initial-splash { background: #ffffff; }
+html.oled:not(.is-standalone) #wev-initial-splash { background: #000000; }
+/* Installed app: exact copy of the Android launch splash. */
+html.is-standalone #wev-initial-splash .wev-splash-app { display: block; }
+html.is-standalone #wev-initial-splash .wev-splash-web { display: none; }
+/* Installed app: page background = launch colour until React applies the theme. */
+html.is-standalone,
+html.is-standalone body {
+  background: #0b0e11;
+}

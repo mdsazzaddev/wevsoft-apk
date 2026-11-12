@@ -1,0 +1,93 @@
+/* Wevsoft Space Inbox theme tokens (scoped to .si-root).
+   Same design language as the Developer Console (console.css): clean white
+   cards on a cool grey canvas, navy rail, blue accents. The app-wide dark mode
+   (`.dark` on <html>) switches it to the dark variant. */
+.si-root {
+  --si-bg: #f3f7fc;
+  --si-card: #ffffff;
+  --si-card-2: #f6f9fd;
+  --si-hover: #f2f6fc;
+  --si-border: #e4eaf3;
+  --si-border-2: #d9e2ee;
+  --si-text: #0f1d3a;
+  --si-text-2: #2a3a57;
+  --si-muted: #66768f;
+  --si-faint: #94a3b8;
+  --si-blue: #1663f2;
+  --si-blue-soft: #e9f1ff;
+  --si-navy: #0b1a30;
+  --si-green: #16a34a;
+  --si-green-soft: #e7f7ee;
+  --si-red: #ef4444;
+  --si-red-soft: #fdecec;
+  --si-amber: #f59e0b;
+  --si-amber-soft: #fff5e1;
+  --si-bubble-in: #eef2f8;
+  --si-shadow: 0 1px 2px rgba(15, 29, 58, 0.04), 0 1px 3px rgba(15, 29, 58, 0.05);
+  --si-side: #0b1a30;
+  --si-side-2: #0f223d;
+  --si-side-text: #c7d1e0;
+  --si-side-head: #e9eef6;
+  --si-side-line: rgba(255, 255, 255, 0.08);
+  --si-side-active: #1d5bdc;
+  font-family: "Inter", "Inter var", "Segoe UI Variable Text", "Segoe UI", system-ui, -apple-system, sans-serif;
+  color: var(--si-text);
+  background: var(--si-bg);
+
+  /* Reused dashboard pieces (saved-replies sheet, avatars, selects) read the
+     app-wide tokens; point them at the inbox palette. */
+  --background: var(--si-bg);
+  --foreground: var(--si-text);
+  --card: var(--si-card);
+  --card-foreground: var(--si-text);
+  --popover: var(--si-card);
+  --popover-foreground: var(--si-text);
+  --primary: var(--si-blue);
+  --primary-foreground: #ffffff;
+  --muted: var(--si-hover);
+  --muted-foreground: var(--si-muted);
+  --border: var(--si-border);
+  --color-background: var(--si-bg);
+  --color-foreground: var(--si-text);
+  --color-card: var(--si-card);
+  --color-card-foreground: var(--si-text);
+  --color-popover: var(--si-card);
+  --color-popover-foreground: var(--si-text);
+  --color-primary: var(--si-blue);
+  --color-primary-foreground: #ffffff;
+  --color-muted: var(--si-hover);
+  --color-muted-foreground: var(--si-muted);
+  --color-border: var(--si-border);
+}
+.dark .si-root {
+  --si-bg: #0b1220;
+  --si-card: #111a2b;
+  --si-card-2: #0f1727;
+  --si-hover: #16223a;
+  --si-border: #1f2b40;
+  --si-border-2: #2a3850;
+  --si-text: #e8eef8;
+  --si-text-2: #c9d4e5;
+  --si-muted: #8d9bb3;
+  --si-faint: #64748b;
+  --si-blue-soft: rgba(47, 107, 242, 0.16);
+  --si-green-soft: rgba(22, 163, 74, 0.16);
+  --si-red-soft: rgba(239, 68, 68, 0.15);
+  --si-amber-soft: rgba(245, 158, 11, 0.15);
+  --si-bubble-in: #1a263c;
+  --si-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --si-side: #070f1d;
+  --si-side-2: #0b1628;
+}
+.si-root .si-card {
+  background: var(--si-card);
+  border: 1px solid var(--si-border);
+  border-radius: 10px;
+  box-shadow: var(--si-shadow);
+}
+.si-root .si-scroll { scrollbar-width: thin; scrollbar-color: var(--si-border-2) transparent; }
+.si-root .si-scroll::-webkit-scrollbar { width: 8px; height: 8px; }
+.si-root .si-scroll::-webkit-scrollbar-thumb { background: var(--si-border-2); border-radius: 8px; }
+.si-root .si-side-scroll { scrollbar-width: thin; scrollbar-color: rgba(255, 255, 255, 0.12) transparent; }
+.si-root .si-noscrollbar { scrollbar-width: none; }
+.si-root .si-noscrollbar::-webkit-scrollbar { display: none; }
